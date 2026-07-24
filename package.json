@@ -1,0 +1,24 @@
+{
+  "name": "dmai",
+  "version": "1.0.0",
+  "description": "D&D Master AI - Local DM assistant for tabletop D&D 5e",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "client": "cd client && npm run dev"
+  },
+  "keywords": ["dnd", "d&d", "dungeon-master", "ai"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2",
+    "@anthropic-ai/sdk": "^0.24.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
