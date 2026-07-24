@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const DATA_DIR = join(__dirname, 'data');
 const CAMPAIGNS_DIR = join(DATA_DIR, 'campaigns');
 
@@ -315,7 +315,17 @@ app.post('/api/validate-scores', (req, res) => {
   res.json({ valid: isValid, sum });
 });
 
-app.listen(PORT, () => {
-  console.log(`🎲 DMAI Server running on http://localhost:${PORT}`);
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not found' });
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🎲 DMAI Server running on port ${PORT}`);
   console.log(`Make sure ANTHROPIC_API_KEY is set in your environment`);
 });
