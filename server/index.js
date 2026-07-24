@@ -3,7 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
 import Anthropic from '@anthropic-ai/sdk';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -80,7 +80,7 @@ function loadCampaign(id) {
 
 function listCampaigns() {
   if (!existsSync(CAMPAIGNS_DIR)) return [];
-  return require('fs').readdirSync(CAMPAIGNS_DIR)
+  return readdirSync(CAMPAIGNS_DIR)
     .filter(f => f.endsWith('.json'))
     .map(f => {
       const campaign = JSON.parse(readFileSync(join(CAMPAIGNS_DIR, f), 'utf-8'));
