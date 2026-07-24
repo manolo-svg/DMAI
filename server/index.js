@@ -80,7 +80,6 @@ function loadCampaign(id) {
 
 function listCampaigns() {
   if (!existsSync(CAMPAIGNS_DIR)) return [];
-  const files = readFileSync(CAMPAIGNS_DIR, { encoding: 'utf-8' });
   return require('fs').readdirSync(CAMPAIGNS_DIR)
     .filter(f => f.endsWith('.json'))
     .map(f => {
