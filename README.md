@@ -14,11 +14,37 @@ Una aplicación local que actúa como Dungeon Master de IA para D&D 5ª edición
 
 ## 🚀 Instalación Rápida
 
-### Requisitos
+### Opción 1: Con Docker (RECOMENDADO - Más Fácil) 🐳
+
+**Requisitos:**
+- **Docker Desktop** (descárgalo desde [docker.com](https://www.docker.com/products/docker-desktop))
+- **Clave API de Anthropic** (obtenerla en [console.anthropic.com](https://console.anthropic.com))
+
+**Pasos:**
+
+1. Descarga y descomprime la carpeta DMAI
+2. Crea un archivo `.env` con tu clave:
+   ```
+   ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxx
+   ```
+3. Abre Terminal en la carpeta DMAI
+4. **Un solo comando:**
+   ```bash
+   docker-compose up
+   ```
+5. Abre navegador en: `http://localhost:5173`
+
+**Ver más detalles en [DOCKER_GUIDE.md](DOCKER_GUIDE.md)**
+
+---
+
+### Opción 2: Con Node.js (Instalación Manual)
+
+**Requisitos:**
 - **Node.js 18+** (descargarlo desde [nodejs.org](https://nodejs.org))
 - **Clave API de Anthropic** (obtenerla en [console.anthropic.com](https://console.anthropic.com))
 
-### Pasos
+**Pasos:**
 
 1. **Clona o descarga este repositorio**
    ```bash
@@ -46,16 +72,6 @@ Una aplicación local que actúa como Dungeon Master de IA para D&D 5ª edición
 
 5. **Inicia la aplicación**
    
-   Opción A - Terminal única (recomendado para principiantes):
-   ```bash
-   npm run start
-   ```
-   Luego en otra terminal:
-   ```bash
-   npm run client
-   ```
-
-   Opción B - Dos terminales (mejor para desarrollo):
    - Terminal 1: `npm run dev`
    - Terminal 2: `npm run client`
 
