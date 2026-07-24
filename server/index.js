@@ -17,7 +17,12 @@ const CAMPAIGNS_DIR = join(DATA_DIR, 'campaigns');
 if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
 if (!existsSync(CAMPAIGNS_DIR)) mkdirSync(CAMPAIGNS_DIR, { recursive: true });
 
-app.use(cors());
+// CORS configuration
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type']
+}));
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(express.static(join(__dirname, '../client/dist')));
 
@@ -75,7 +80,6 @@ function loadCampaign(id) {
 
 function listCampaigns() {
   if (!existsSync(CAMPAIGNS_DIR)) return [];
-  const files = readFileSync(CAMPAIGNS_DIR, { encoding: 'utf-8' });
   return require('fs').readdirSync(CAMPAIGNS_DIR)
     .filter(f => f.endsWith('.json'))
     .map(f => {
