@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # Backend - Servidor de Node.js
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - ./server:/app/server
+      - ./server/data:/app/server/data
+    command: npm run dev
+    networks:
+      - dmai-network
+
+  # Frontend - React con Vite
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client/src:/app/src
+      - ./client/public:/app/public
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    depends_on:
+      - backend
+    networks:
+      - dmai-network
+    command: npm run dev -- --host
+
+networks:
+  dmai-network:
+    driver: bridge
