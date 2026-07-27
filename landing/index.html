@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DMAI: tu Dungeon Master de IA para D&D 5e. Solicita tu partida de demostración gratuita y juega sin necesidad de máster.">
+  <title>DMAI — Juega a D&D sin máster. Partida gratuita</title>
+  <style>
+    /* ==========================================================
+       DMAI · Landing de captación
+       Marca: principal #1a1a2e (azul noche) · acento #d4af37 (oro)
+       Tipografía: serif (titulares) + sans (texto) · Tono: cercano
+       ========================================================== */
+    :root {
+      --primario: #1a1a2e;
+      --primario-2: #16213e;
+      --acento: #d4af37;
+      --acento-osc: #a0860a;
+      --texto: #e8e6e1;
+      --texto-suave: #b9b6ae;
+      --tarjeta: rgba(255, 255, 255, 0.045);
+      --borde: rgba(212, 175, 55, 0.35);
+      --serif: Georgia, 'Times New Roman', serif;
+      --sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background:
+        radial-gradient(ellipse at 20% -10%, rgba(212, 175, 55, 0.12) 0%, transparent 55%),
+        linear-gradient(160deg, var(--primario) 0%, var(--primario-2) 100%);
+      background-attachment: fixed;
+      color: var(--texto);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .contenedor {
+      width: min(1060px, 92%);
+      margin: 0 auto;
+    }
+
+    /* ---------- Cabecera mínima (sin menú: una sola acción) ---------- */
+    .cabecera {
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .logo {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      letter-spacing: 0.12em;
+      color: var(--acento);
+      text-transform: uppercase;
+    }
+
+    .logo span { color: var(--texto); }
+
+    /* ---------- Héroe ---------- */
+    .heroe {
+      padding: 72px 0 56px;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .etiqueta {
+      display: inline-block;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--acento);
+      border: 1px solid var(--borde);
+      border-radius: 999px;
+      padding: 6px 16px;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4.4vw, 3.1rem);
+      line-height: 1.15;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--acento);
+    }
+
+    .subtitulo {
+      font-size: 1.13rem;
+      color: var(--texto-suave);
+      max-width: 34rem;
+      margin-bottom: 30px;
+    }
+
+    /* ---------- Beneficios ---------- */
+    .beneficios {
+      list-style: none;
+      display: grid;
+      gap: 14px;
+    }
+
+    .beneficios li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: var(--tarjeta);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-left: 3px solid var(--acento);
+      border-radius: 10px;
+      padding: 14px 18px;
+    }
+
+    .beneficios .icono {
+      flex-shrink: 0;
+      font-size: 1.3rem;
+      line-height: 1.4;
+    }
+
+    .beneficios strong {
+      display: block;
+      color: var(--texto);
+      font-size: 1rem;
+    }
+
+    .beneficios p {
+      color: var(--texto-suave);
+      font-size: 0.92rem;
+    }
+
+    /* ---------- Formulario ---------- */
+    .panel-form {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+      border: 1px solid var(--borde);
+      border-radius: 16px;
+      padding: 34px 30px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .panel-form h2 {
+      font-family: var(--serif);
+      font-size: 1.45rem;
+      margin-bottom: 6px;
+    }
+
+    .panel-form .nota {
+      color: var(--texto-suave);
+      font-size: 0.93rem;
+      margin-bottom: 22px;
+    }
+
+    .campo { margin-bottom: 16px; }
+
+    .campo label {
+      display: block;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      color: var(--texto-suave);
+      margin-bottom: 6px;
+    }
+
+    .campo input {
+      width: 100%;
+      padding: 13px 15px;
+      font-size: 1rem;
+      font-family: var(--sans);
+      color: var(--texto);
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 8px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .campo input::placeholder { color: rgba(185, 182, 174, 0.55); }
+
+    .campo input:focus {
+      outline: none;
+      border-color: var(--acento);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+    }
+
+    .cta {
+      display: block;
+      width: 100%;
+      margin-top: 8px;
+      padding: 16px 20px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      font-family: var(--sans);
+      letter-spacing: 0.02em;
+      color: var(--primario);
+      background: linear-gradient(135deg, #e8c547 0%, var(--acento) 45%, var(--acento-osc) 100%);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(212, 175, 55, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(212, 175, 55, 0.5);
+    }
+
+    .cta:active { transform: translateY(0); }
+
+    .privacidad {
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: var(--texto-suave);
+      text-align: center;
+    }
+
+    .mensaje-ok {
+      display: none;
+      margin-top: 16px;
+      padding: 14px;
+      text-align: center;
+      border: 1px solid var(--borde);
+      border-radius: 8px;
+      color: var(--acento);
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    /* ---------- Señales de confianza ---------- */
+    .confianza {
+      padding: 34px 0 70px;
+    }
+
+    .confianza .fila {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .sello {
+      text-align: center;
+      background: var(--tarjeta);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 24px 18px;
+    }
+
+    .sello .dato {
+      font-family: var(--serif);
+      font-size: 1.9rem;
+      color: var(--acento);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .sello p {
+      color: var(--texto-suave);
+      font-size: 0.92rem;
+    }
+
+    .cita {
+      margin-top: 26px;
+      text-align: center;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.08rem;
+      color: var(--texto-suave);
+    }
+
+    .cita strong {
+      display: block;
+      margin-top: 8px;
+      font-family: var(--sans);
+      font-style: normal;
+      font-size: 0.85rem;
+      color: var(--acento);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ---------- Pie ---------- */
+    .pie {
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 24px 0 34px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--texto-suave);
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 860px) {
+      .heroe {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 48px 0 40px;
+      }
+      .confianza .fila { grid-template-columns: 1fr; }
+      .panel-form { padding: 28px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="cabecera">
+    <div class="contenedor">
+      <div class="logo">DM<span>AI</span></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="heroe contenedor">
+      <div>
+        <span class="etiqueta">Dungeon Master de IA · D&amp;D 5e</span>
+        <h1>Juega a D&amp;D con tu grupo <em>sin que nadie tenga que ser el máster</em></h1>
+        <p class="subtitulo">
+          DMAI narra la aventura, dirige los combates y guarda vuestra campaña
+          automáticamente. Vosotros solo tenéis que sentaros a la mesa, tirar los
+          dados y disfrutar. Pide tu partida de demostración gratuita.
+        </p>
+
+        <ul class="beneficios">
+          <li>
+            <span class="icono">🎲</span>
+            <div>
+              <strong>Narrativa épica generada por IA</strong>
+              <p>Historias coherentes que reaccionan a cada decisión de tu grupo, partida tras partida.</p>
+            </div>
+          </li>
+          <li>
+            <span class="icono">⚔️</span>
+            <div>
+              <strong>Combate y reglas sin esfuerzo</strong>
+              <p>Iniciativa, turnos, daño y puntos de vida gestionados por la app. Los dados los tiráis vosotros.</p>
+            </div>
+          </li>
+          <li>
+            <span class="icono">🧙</span>
+            <div>
+              <strong>Ideal para grupos sin experiencia</strong>
+              <p>No hace falta saberse D&amp;D 5e: la app aplica las reglas y os sugiere acciones si os quedáis en blanco.</p>
+            </div>
+          </li>
+          <li>
+            <span class="icono">💾</span>
+            <div>
+              <strong>Vuestra campaña, siempre a salvo</strong>
+              <p>Guardado automático tras cada acción: parad cuando queráis y retomad la aventura donde la dejasteis.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="panel-form">
+        <h2>Reserva tu partida gratuita</h2>
+        <p class="nota">Déjanos tus datos y te escribimos para preparar la demo con tu grupo. Sin compromiso.</p>
+        <form id="form-lead" action="#" method="post" novalidate>
+          <div class="campo">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" autocomplete="name" required>
+          </div>
+          <div class="campo">
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="600 000 000" autocomplete="tel" required>
+          </div>
+          <div class="campo">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="tu@email.com" autocomplete="email" required>
+          </div>
+          <button type="submit" class="cta">⚔️ Quiero mi partida gratuita</button>
+          <p class="privacidad">Solo usaremos tus datos para contactarte sobre la demo. Nada de spam.</p>
+          <p class="mensaje-ok" id="mensaje-ok">✅ ¡Recibido, aventurero! Te contactaremos muy pronto.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="confianza">
+      <div class="contenedor">
+        <div class="fila">
+          <div class="sello">
+            <span class="dato">3–6</span>
+            <p>jugadores por mesa, flexible según quién pueda jugar cada día</p>
+          </div>
+          <div class="sello">
+            <span class="dato">100%</span>
+            <p>reglas de D&amp;D 5e gestionadas por la app: combate, iniciativa y HP</p>
+          </div>
+          <div class="sello">
+            <span class="dato">+50</span>
+            <p>campañas narradas por nuestra IA, impulsada por Claude de Anthropic</p>
+          </div>
+        </div>
+        <p class="cita">
+          «Llevábamos años queriendo jugar y nadie se atrevía a ser el máster.
+          Con DMAI montamos la partida la misma noche.»
+          <strong>— Grupo de juego de Valencia</strong>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      © 2026 DMAI · D&amp;D Master AI — Que disfrutéis la aventura ⚔️🐉
+    </div>
+  </footer>
+
+  <script>
+    // Al publicar, sustituye este bloque por el envío real del formulario
+    // (por ejemplo: action="https://formspree.io/f/TU_ID" method="POST" y elimina este script).
+    document.getElementById('form-lead').addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!this.checkValidity()) { this.reportValidity(); return; }
+      document.getElementById('mensaje-ok').style.display = 'block';
+      this.reset();
+    });
+  </script>
+
+</body>
+</html>
